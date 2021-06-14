@@ -1,0 +1,25 @@
+{% extends "water/base.html" %}
+{% load static %}
+{% block title %}
+{{ supplier.name }}
+{% endblock %}
+{% block content %}
+<div class="product-detail">
+	<img src="{% if supplier.image %}{{ supplier.image.url }}{% else %}
+{% static "img/no_image.png" %}{% endif %}">
+<h1>{{ supplier.name }}</h1>
+<h2>
+<a href="{{ supplier.category.get_absolute_url }}">
+{{ supplier.category }}
+</a>
+</h2>
+<p class="price">Fresh water price: KSH{{ supplier.price }}</p>
+
+{{ supplier.description|linebreaks }}
+<form action="{% url "cart:cart_add" supplier.id %}" method="post">
+	{{ cart_supplier_form }}
+	{% csrf_token %}
+	<input type="submit" value="Order">
+</form>
+</div>
+{% endblock %}

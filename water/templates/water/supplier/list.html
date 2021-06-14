@@ -1,0 +1,36 @@
+{% extends "water/base.html" %}
+{% load static %}
+{% block title %}
+{% if category %}{{ category.name }}{% else %}Supliers{% endif %}
+{% endblock %}
+{% block content %}
+<div id="sidebar">
+	<h3>Categories</h3>
+	<ul>
+		<li {% if not category %}class="selected"{% endif %}>
+			<a href="{% url "water:supplier_list" %}">All</a>
+		</li>
+		{% for c in categories %}
+		<li {% if category.slug == c.slug %}class="selected"
+		{% endif %}>
+			<a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+		</li>
+		{% endfor %}
+	</ul>
+</div>
+	<div id="main" class="product-list">
+		<h1>{% if category %}{{ category.name }}{% else %}Suppliers
+{% endif %}</h1>
+{% for supplier in suppliers %}
+<div class="item">
+	<a href="{{ supplier.get_absolute_url }}">
+		<img src="{% if supplier.image %}{{ supplier.image.url }}{%else %}{% static "img/no_image.png" %}{% endif %}">
+	</a>
+	<a href="{{ supplier.get_absolute_url }}">{{ supplier.name }}</a>
+	<br>
+	capacity:{{ supplier.capacity }}
+	<p><strong>price(Ksh): {{ supplier.price }}</strong></p>
+</div>
+{% endfor %}
+</div>
+{% endblock %}
